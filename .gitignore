@@ -1,0 +1,20 @@
+# Dependencies
+/node_modules
+/client/node_modules
+
+# Vite build output & cache
+/client/dist
+/client/.vite
+
+# dotenv environment variables file
+# SANGAT PENTING untuk keamanan
+.env
+/server/.env
+/client/.env
+
+# Logs
+npm-debug.log*
+
+# Editor directories and files
+.vscode
+.idea
