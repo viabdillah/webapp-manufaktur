@@ -6,12 +6,15 @@ import App from './App.jsx'; // Jangan lupa import App.jsx
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
+
 // Impor komponen halaman kita
 
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
+import ProductionPage from './pages/ProductionPage.jsx';
+import DesignerPage from './pages/DesignerPage.jsx';
 
 
 // Impor CSS utama kita
@@ -42,6 +45,22 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <DashboardPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'production',
+        element: (
+          <ProtectedRoute>
+            <ProductionPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'design',
+        element: (
+          <ProtectedRoute>
+            <DesignerPage />
           </ProtectedRoute>
         ),
       },

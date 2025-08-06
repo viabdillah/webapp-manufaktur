@@ -23,9 +23,23 @@ function Navbar() {
             {user ? (
               // Jika pengguna sudah login
               <>
+                {/* Link ke Dashboard hanya muncul jika login */}
+                <li><Link to="/dashboard" className="hover:text-gray-300">Dashboard</Link></li>
+
+                {/* Link ke Produksi HANYA muncul untuk Admin (1) atau Produksi (4) */}
+                {(user.id_peran === 1 || user.id_peran === 4) && (
+                  <li><Link to="/production" className="hover:text-gray-300">Produksi</Link></li>
+                )}
+
+                {/* Link ke Desain HANYA muncul untuk Admin (1) atau Desainer (3) */}
+                {(user.id_peran === 1 || user.id_peran === 3) && (
+                  <li><Link to="/design" className="hover:text-gray-300">Desain</Link></li>
+                )}
+
                 <li className="font-semibold text-yellow-400">
                   Halo, {user.username}!
                 </li>
+                
                 <li>
                   <button 
                     onClick={handleLogout} 
