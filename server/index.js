@@ -14,8 +14,12 @@ const { authenticateToken } = require('./middleware/authMiddleware');
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 
+const blogRoutes = require('./routes/blogRoutes');
+
 const app = express();
 const port = 3001;
+
+const cartRoutes = require('./routes/cartRoutes');
 
 // Middleware global
 app.use(cors());
@@ -27,6 +31,8 @@ app.use('/api', authRoutes);
 app.use('/api/products', productRoutes); 
 app.use('/api/orders', orderRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/blogs', blogRoutes);
+app.use('/api/cart', cartRoutes);
 
 // Endpoint profil yang dilindungi (sekarang akan berfungsi)
 app.get('/api/profile', authenticateToken, (req, res) => {

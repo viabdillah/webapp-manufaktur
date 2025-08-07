@@ -2,16 +2,20 @@ import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
-// Komponen ini menerima 'children', yaitu komponen lain yang dibungkusnya
 function ProtectedRoute({ children }) {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
 
+  // Jika masih dalam proses loading, tampilkan pesan loading
+  if (loading) {
+    return <div className="text-center mt-20">Memeriksa autentikasi...</div>;
+  }
+
+  // Jika sudah tidak loading DAN tidak ada user, baru redirect
   if (!user) {
-    // Jika tidak ada user (belum login), arahkan ke halaman login
     return <Navigate to="/login" />;
   }
 
-  // Jika sudah login, tampilkan komponen yang dibungkusnya
+  // Jika sudah tidak loading DAN ada user, tampilkan halaman
   return children;
 }
 

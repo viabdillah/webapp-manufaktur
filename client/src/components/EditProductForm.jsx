@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
 function EditProductForm({ onClose, onProductUpdated, productToEdit }) {
-  // State untuk form, diisi dengan data produk yang akan diedit
   const [formData, setFormData] = useState({
     nama_produk: '',
     deskripsi: '',
@@ -10,7 +9,6 @@ function EditProductForm({ onClose, onProductUpdated, productToEdit }) {
   });
   const [error, setError] = useState('');
 
-  // useEffect untuk mengisi form saat komponen menerima data produk
   useEffect(() => {
     if (productToEdit) {
       setFormData({
@@ -42,8 +40,8 @@ function EditProductForm({ onClose, onProductUpdated, productToEdit }) {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || 'Gagal memperbarui produk');
 
-      onProductUpdated(); // Refresh data di dashboard
-      onClose(); // Tutup modal
+      onProductUpdated(); // Memanggil fungsi refresh di Dashboard
+      onClose(); // Menutup modal
     } catch (err) {
       setError(err.message);
     }
@@ -54,6 +52,7 @@ function EditProductForm({ onClose, onProductUpdated, productToEdit }) {
       <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4">Edit Produk</h2>
         <form onSubmit={handleSubmit}>
+          {/* Isi form (input nama, deskripsi, harga, stok) */}
           <div className="mb-4">
             <label className="block text-gray-700">Nama Produk</label>
             <input name="nama_produk" type="text" value={formData.nama_produk} onChange={handleChange} className="w-full p-2 border rounded" required />

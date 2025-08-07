@@ -92,6 +92,49 @@ router.post('/:id/pay', cashierAccess, (req, res) => {
             res.status(201).json({ message: 'Pembayaran berhasil dan pesanan telah selesai' });
         });
     });
+
+        // === RUTE BARU UNTUK DETAIL PESANAN ===
+    // GET /api/orders/:id - Mendapatkan detail satu pesanan
+    router.get('/:id', authenticateToken, (req, res) => {
+        const orderId = req.params.id;
+        const requestingUserId = req.user.id;
+        const requestingUserRole = req.user.id_peran;
+
+        // Query ini sedikit kompleks karena kita menggabungkan (JOIN) banyak tabel
+        // untuk mendapatkan nama-nama pengguna, bukan hanya ID mereka.
+        const sql = `
+            SELECT 
+                o.*, 
+                pembeli.nama_lengkap as nama_pembeli,
+                desainer.nama_lengkap as nama_desainer,
+                produksi.nama_lengkap as nama_produksi
+            FROM orders o
+            JOIN users pembeli ON o.id_pembeli = pembeli.id
+            LEFT JOIN users desainer ON o.id_desainer = desainer.id
+            LEFT JOIN users produksi ON o.id_produksi = produksi.id
+            WHERE o.id = ?;
+        `;
+
+        db.query(sql, [orderId], (err, results) => {
+            if (err) return res.status(500).json({ message: 'Error server', error: err });
+            if (results.length === 0) {
+                return res.status(404).json({ message: 'Pesanan tidak ditemukan' });
+            }
+
+            const order = results[0];
+
+            // Logika keamanan sederhana: hanya admin atau pengguna yang terlibat dalam pesanan
+            // (pembeli, desainer, atau staf produksi) yang boleh melihat detailnya.
+            if (requestingUserRole !== 1 && 
+                order.id_pembeli !== requestingUserId &&
+                order.id_desainer !== requestingUserId &&
+                order.id_produksi !== requestingUserId) {
+                return res.status(403).json({ message: 'Akses ditolak' });
+            }
+
+            res.json(order);
+        });
+    });
 });
 
 
